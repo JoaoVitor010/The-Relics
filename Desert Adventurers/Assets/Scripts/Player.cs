@@ -3,11 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class 
+    Player : MonoBehaviour
 {
     public float speed;
-    public float jumpForce;
-    private bool isJumping;
+    public float jumpforce;
+    
+    public GameObject bow;
+    public Transform firepoint;
+    private bool isfire;
+    
+    private bool isjuping;
 
     private Rigidbody2D rig;
     
@@ -22,6 +28,7 @@ public class Player : MonoBehaviour
     {
         Move();
         Jump();
+        Shot();
     }
 
     void Move()
@@ -43,21 +50,42 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if(Input.GetButtonDown("Jump"))
         {
-            if (!isJumping)
+            if (!isjuping)
             {
-                rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                isJumping = true;
+                rig.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
+                isjuping = true;
             }
+            
         }
+    }
+
+    void Shot()
+    {
+        StartCoroutine("Fire");
+    }
+
+    IEnumerator Fire()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            isfire = true;
+            GameObject Bow = Instantiate(bow, firepoint.position, firepoint.rotation);
+
+            Bow.GetComponent<Bow>().isRigth = transform.rotation.y == 0;
+            
+            yield return new WaitForSeconds(0.2f);
+            isfire = false;
+        }
+       
     }
 
     private void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.layer == 8)
         {
-            isJumping = false;
+            isjuping = false;
         }
     }
 }
