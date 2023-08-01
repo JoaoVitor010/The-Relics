@@ -10,6 +10,8 @@ private Rigidbody2D rig;
 public float WalkTime;
 private float timer;
 public bool Walkrigth = true;
+public int health;
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,5 +41,16 @@ public bool Walkrigth = true;
             rig.velocity = Vector2.left * Speed;
             
         }
+    }
+    public void Damage(int dmg)
+    {
+     health -= dmg;
+     
+     if(health <= 0)
+     
+     {
+       Destroy(gameObject);
+     }
+    
     }
 }

@@ -30,11 +30,17 @@ public class Bow : MonoBehaviour
         }
         
     }
-    private void OnTriggerEnter2D(Collider2D Collision)
-    {
-        if (Collision.gameObject.tag == "Ground")
+    private void OnTriggerEnter2D(Collider2D collision)
         {
-            Destroy(gameObject);
+            if (collision.gameObject.tag == "Ground")
+            {
+                Destroy(gameObject);
+            }
+            else if (collision.gameObject.tag == "Enemy")
+            {
+                collision.GetComponent<Enemy>().Damage(damage);
+                Destroy(gameObject);
+            }
         }
-    }
+
 }
